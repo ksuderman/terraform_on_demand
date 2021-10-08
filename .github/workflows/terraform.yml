@@ -26,4 +26,9 @@ jobs:
           OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
           OS_PROJECT_ID: ${{ secrets.OS_PROJECT_ID }}
           OS_PROJECT_DOMAIN_ID: ${{ secrets.OS_PROJECT_DOMAIN_ID }}
+          OS_REGION_NAME: ${{ secrets.OS_REGION_NAME }}
+          OS_PROJECT_NAME: ${{ secrets.OS_ROJECT_NAME }}          
+          OS_USER_DOMAIN_NAME: tacc
+          OS_INTERFACE: public
+          OS_IDENTITY_API_VERSION: 3
         run: terraform plan
