@@ -1,0 +1,38 @@
+name: Comments Bot
+on: 
+  issue_comment:
+    types: [ created ]
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  OS_AUTH_URL: ${{ secrets.OS_AUTH_URL }}
+  OS_USERNAME: ${{ secrets.OS_USERNAME }}
+  OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
+  OS_PROJECT_ID: ${{ secrets.OS_PROJECT_ID }}
+  OS_PROJECT_DOMAIN_ID: ${{ secrets.OS_PROJECT_DOMAIN_ID }}
+  OS_REGION_NAME: ${{ secrets.OS_REGION_NAME }}
+  OS_PROJECT_NAME: ${{ secrets.OS_PROJECT_NAME }}          
+  OS_USER_DOMAIN_NAME: tacc
+  OS_INTERFACE: public
+  OS_IDENTITY_API_VERSION: 3
+jobs:
+  apply:
+    name: Apply the Terraform plan
+    if: ${{ !github.event.issue.pull_request }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo stuff
+        run: |
+          echo "Comment on issue #${{ github.event.issue.number }}" 
+      - uses: actions/checkout@v2
+        with:
+          ref: testing
+      - name: Initialize Terraform
+        run: terraform init -input=false
+      - name: Plan
+        run: terraform plan 
+      - name: Debug
+        env:
+          GITHUB_CONTEXT: ${{ toYaml(github) }}
+        run:   echo "$GITHUB_CONTEXT"
