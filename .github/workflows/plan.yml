@@ -17,7 +17,7 @@ env:
   OS_IDENTITY_API_VERSION: 3
 
 jobs:
-  apply:
+  plan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1

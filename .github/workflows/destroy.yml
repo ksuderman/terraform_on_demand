@@ -16,7 +16,7 @@ env:
   OS_INTERFACE: public
   OS_IDENTITY_API_VERSION: 3
 jobs:
-  plan:
+  destroy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
