@@ -29,5 +29,5 @@ jobs:
         run: terraform --version
       - name: Terraform validate
         run: terraform validate
-      - name: Terraform Apply
+      - name: Terraform Plan
         run: terraform plan -input=false
