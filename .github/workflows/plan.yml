@@ -1,0 +1,31 @@
+name: ChatOps Bot - Terraform Plan
+on:
+  repository_dispatch:
+    types: [ plan-command ]
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  OS_AUTH_URL: ${{ secrets.OS_AUTH_URL }}
+  OS_USERNAME: ${{ secrets.OS_USERNAME }}
+  OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
+  OS_PROJECT_ID: ${{ secrets.OS_PROJECT_ID }}
+  OS_PROJECT_DOMAIN_ID: ${{ secrets.OS_PROJECT_DOMAIN_ID }}
+  OS_REGION_NAME: ${{ secrets.OS_REGION_NAME }}
+#  OS_PROJECT_NAME: ${{ secrets.OS_PROJECT_NAME }}          
+  OS_USER_DOMAIN_NAME: tacc
+  OS_INTERFACE: public
+  OS_IDENTITY_API_VERSION: 3
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Terraform init
+        run: terraform init -input=false        
+      - name: Terraform version
+        run: terraform --version
+      - name: Terraform validate
+        run: terraform validate
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -input=false
