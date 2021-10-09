@@ -1,4 +1,4 @@
-name: ChatOps Bot - Issue Comments
+name: ChatOps Bot - Comment Created
 on: 
   issue_comment:
     types: [ created ]
