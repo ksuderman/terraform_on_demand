@@ -30,4 +30,4 @@ jobs:
       - name: Terraform validate
         run: terraform validate
       - name: Terraform Apply
-        run: terraform plan -auto-approve -input=false
+        run: terraform plan -input=false
