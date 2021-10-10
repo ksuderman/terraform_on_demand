@@ -15,3 +15,4 @@ jobs:
             plan
             apply
             destroy
+            test

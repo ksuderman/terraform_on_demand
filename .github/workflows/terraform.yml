@@ -1,8 +1,5 @@
-name: Validate infrastructure with Terraform
-on:
-  push:
-    branches:
-      - never
+name: Validate the Terraform plan
+on: push
 jobs:
   plan:
     runs-on: ubuntu-latest
@@ -18,18 +15,3 @@ jobs:
         run: terraform --version
       - name: Terraform validate
         run: terraform validate
-      - name: Terraform Plan
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          OS_AUTH_URL: ${{ secrets.OS_AUTH_URL }}
-          OS_USERNAME: ${{ secrets.OS_USERNAME }}
-          OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
-          OS_PROJECT_ID: ${{ secrets.OS_PROJECT_ID }}
-          OS_PROJECT_DOMAIN_ID: ${{ secrets.OS_PROJECT_DOMAIN_ID }}
-          OS_REGION_NAME: ${{ secrets.OS_REGION_NAME }}
-          OS_PROJECT_NAME: ${{ secrets.OS_ROJECT_NAME }}          
-          OS_USER_DOMAIN_NAME: tacc
-          OS_INTERFACE: public
-          OS_IDENTITY_API_VERSION: 3
-        run: terraform plan
