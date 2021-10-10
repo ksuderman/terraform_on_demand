@@ -1,22 +1,25 @@
 # Infrastructure On Demand
-This is a simple proof of concept using GitHub actions to create infrastructure on OpenStack (Jetstream) using Terraform. The following actions are used:
+This is a simple proof of concept ChatOps Bot that can create/destroy infrastructure based on the Terraform plans in the `testing` branch of this repository.  In the future the branch to use will be specified as a parameter to the chat command or as a label, and each branch will contain a separate Terraform plan for the infrastructure to manage
 
-1. push to the `dev` branch: runs `terraform validate` and `terraform plan` on the dev branch.
-2. open a PR: runs `terraform apply`
-3. close the PR: runs `terraform destroy`
+Add a comment to issue #2 with one of the recognized commands on the first line.  Subsequent lines are ignored and can be used for documentation.
 
-The terraform state is stored in an S3 bucket.
+### Commands
+
+```
+/validate
+/plan
+/apply
+/destroy
+/test
+```
+
+All of the commands, except the /`test` command, run the equivalent terraform command, ie. `/plan` runs `terraform plan`.  The `/test` command is provided as a hook for testing and development purposes.
 
 ## Future Work
 
-### Multiple Clusters
+1. **Terraform State**: Since the terraform state is stored in a single S3 bucket only a single cluster can be managed.  Use something [like this](https://github.com/KyMidd/Terraform_CI-CD_Bootstrap) to bootstrap the creation of the the DynamoDB table so the state from multiple clusters can be stored without stomping all over each another.
+2. **Parameterize branch**: The branch to checkout should be specified as a parameter to the chat command or as an issue label.  Prefer the label to avoid dealing with typos and unwanted behavior relying on the user to specify a valid branch
+3. **Pass variables** from the chat command to the Terraform plan.
 
-Since the terraform state is store in a single S3 bucket only a single cluster can be managed.  Use [something to bootstrap](https://github.com/KyMidd/Terraform_CI-CD_Bootstrap) the creation of the the DynamoDB table so the state from multiple clusters can be stored without stomping all over one another.
 
-Cluster configurations could be stored in separate branches with some logic to determined when to run `terraform validate|plan|apply|destroy`. Possibilities include:
-
-1. When a PR is opened/closed
-2. When an issue is opened/closed
-3. Based on keywords in [issue comments](https://pakstech.com/blog/gh-actions-issue-comments/)
-4. Some other criteria
 
