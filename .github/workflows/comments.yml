@@ -3,8 +3,9 @@ on:
   issue_comment:
     types: [ created ]
 jobs:
-  slashCommandDispatch:
+  dispatch:
     runs-on: ubuntu-latest
+    if: contains('ksuderman hexylena almahmoud', github.payload.comment.user.login)
     steps:
       - name: Slash Command Dispatch
         uses: peter-evans/slash-command-dispatch@v2
