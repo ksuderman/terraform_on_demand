@@ -32,7 +32,7 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: |
-          echo "::set-output name=plan::$(terraform plan -input=false)"
+          echo "::set-output name=plan::$(terraform plan -input=false -no-color -json | jq -M)"
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v1
         with:
