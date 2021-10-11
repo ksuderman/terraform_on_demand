@@ -15,6 +15,10 @@ Add a comment to issue #2 with one of the recognized commands on the first line.
 
 All of the commands, except the /`test` command, run the equivalent terraform command, ie. `/plan` runs `terraform plan`.  The `/test` command is provided as a hook for testing and development purposes.
 
+## Terraform State
+
+Terraform stores state information about the infrastructure is is managing on the local filesystem.  This is fine for local development, but in a CI system these files need to be stored somewhere persistent.  In this case we configure a S3 *backend* to store files in a S3 bucket and lock files in a DynamoDB.
+
 ## Future Work
 
 1. **Terraform State**: Since the terraform state is stored in a single S3 bucket only a single cluster can be managed.  Use something [like this](https://github.com/KyMidd/Terraform_CI-CD_Bootstrap) to bootstrap the creation of the the DynamoDB table so the state from multiple clusters can be stored without stomping all over each another.
