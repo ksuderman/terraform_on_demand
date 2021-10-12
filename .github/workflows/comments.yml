@@ -2,12 +2,10 @@ name: ChatOps Bot - Comment Created
 on: 
   issue_comment:
     types: [ created ]
-env:
-  ALLOW_LIST: "hexylena almahmoud nuwang afgane ksuderman"
 jobs:
   dispatch:
     runs-on: ubuntu-latest
-    if: contains($ALLOW_LIST, github.payload.comment.user.login) && contains(github.event.issue.labels.*.name, 'branch/')
+    if: contains("hexylena almahmoud nuwang afgane ksuderman", github.payload.comment.user.login) && contains(github.event.issue.labels.*.name, 'branch/')
     steps:
       - name: Slash Command Dispatch
         uses: peter-evans/slash-command-dispatch@v2
