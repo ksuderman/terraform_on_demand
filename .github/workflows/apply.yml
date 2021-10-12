@@ -20,9 +20,15 @@ jobs:
   apply:
     runs-on: ubuntu-latest
     steps:
+      - name: Get branch name from label
+        id: branch
+        run: |
+          label=${{ github.event.client_payload.github.payload.issue.labels[0].name }}
+          label=$(sed 's|branch/||' <<< $label)
+          echo ::set-output name=label::$label
       - uses: actions/checkout@v1
         with:
-          ref: testing
+          ref: ${{ steps.branch.outputs.label }}
       - name: Terraform init
         run: terraform init -input=false        
       - name: Terraform version

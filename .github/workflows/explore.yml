@@ -6,7 +6,7 @@ jobs:
   explore:
     runs-on: ubuntu-latest
     steps:
-      - name: do stuff
+      - name: Get branch name from label
         id: branch
         run: |
           label=${{ github.event.client_payload.github.payload.issue.labels[0].name }}
