@@ -31,13 +31,17 @@ jobs:
         run: terraform validate
       - name: Terraform Apply
         run: terraform apply -auto-approve -input=false
-      - id: set
+      - id: comment
         run: |
-          echo "::set-output name=comment::$(cat comment.txt)"
+          body=$(cat comment.txt)
+          body="${body//'%'/'%25'}"
+          body="${body//$'\n'/'%0A'}"
+          body="${body//$'\r'/'%0D'}" 
+          echo "::set-output name=body::$body"
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
           issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
-          body: ${{ steps.set.outputs.comment }}      
+          body: ${{ steps.comment.outputs.body }}      
