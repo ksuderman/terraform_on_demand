@@ -1,5 +1,8 @@
 name: Validate the Terraform plan
-on: push
+on: 
+  push:
+    branches-ignore:
+      - master
 jobs:
   plan:
     runs-on: ubuntu-latest
