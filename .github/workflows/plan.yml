@@ -33,6 +33,8 @@ jobs:
         id: plan
         run: |
           echo "::set-output name=plan::$(terraform plan -input=false -no-color)"
+      - name: Sanity check 
+        run: pwd ; ls -al
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v1
         with:
