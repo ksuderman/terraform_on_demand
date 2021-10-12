@@ -7,7 +7,7 @@ env:
 jobs:
   dispatch:
     runs-on: ubuntu-latest
-    if: contains("${ALLOW_LIST}", github.payload.comment.user.login) && contains(github.event.issue.labels.*.name, 'branch/')
+    if: contains($ALLOW_LIST, github.payload.comment.user.login) && contains(github.event.issue.labels.*.name, 'branch/')
     steps:
       - name: Slash Command Dispatch
         uses: peter-evans/slash-command-dispatch@v2
