@@ -5,7 +5,7 @@ on:
 jobs:
   dispatch:
     runs-on: ubuntu-latest
-    if: contains('hexylena almahmoud nuwang afgane ksuderman', github.payload.comment.user.login) && contains(github.event.issue.labels.*.name, 'branch/')
+    if: contains('hexylena almahmoud nuwang afgane ksuderman', github.payload.comment.user.login)
     steps:
       - name: Slash Command Dispatch
         uses: peter-evans/slash-command-dispatch@v2
@@ -27,3 +27,13 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           comment-id: ${{ github.event.comment.id }}
           reactions: -1
+  haslabel:
+    runs-on: ubuntu-latest
+    if: contains(github.event.issue.labels.*.name, 'branch/')
+    steps:
+      - name: React
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          comment-id: ${{ github.event.comment.id }}
+          reactions: +1
