@@ -11,7 +11,6 @@ env:
   OS_PROJECT_ID: ${{ secrets.OS_PROJECT_ID }}
   OS_PROJECT_DOMAIN_ID: ${{ secrets.OS_PROJECT_DOMAIN_ID }}
   OS_REGION_NAME: ${{ secrets.OS_REGION_NAME }}
-  OS_PROJECT_NAME: ${{ secrets.OS_ROJECT_NAME }}          
   OS_USER_DOMAIN_NAME: tacc
   OS_INTERFACE: public
   OS_IDENTITY_API_VERSION: 3
@@ -28,4 +27,12 @@ jobs:
         run: terraform --version
       - name: Terraform Destroy
         run: terraform destroy -auto-approve -input=false
+      - name: Create comment
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
+          issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
+          body: Cluster has been destroyed.
+
         
