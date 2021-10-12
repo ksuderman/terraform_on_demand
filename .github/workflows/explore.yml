@@ -9,9 +9,9 @@ jobs:
       - name: do stuff
         id: branch
         run: |
-          label="${{ github.event.client_payload.github.payload.issue.labels[0].name }}"
+          label=${{ github.event.client_payload.github.payload.issue.labels[0].name }}
           label=$(sed 's|branch/||' <<< $label)
-          echo "::set-output name=label::$label"
+          echo ::set-output name=label::$label
       - name: Echo branch name
         env:
           PAYLOAD_CONTEXT: ${{ toJson(github.event.client_payload) }}
