@@ -5,6 +5,9 @@ variable "network" { default = "ks-network" }
 
 variable "name" { default = "ks-github-terraform-bot"}
 
+variable "s3_bucket" { }
+variable "lock_table" {}
+
 resource "openstack_compute_instance_v2" "node" {
   name            = var.name
   image_name      = var.image
