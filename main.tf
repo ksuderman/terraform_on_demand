@@ -4,6 +4,7 @@ variable "s3_bucket" { default = "ks-github-tf-aws"}
 variable "lock_table" { default = "ks-github-tf-aws" }
 
 variable "fqdn" { default = "bench3.usegvl.org" }
+
 resource "aws_eip" "frontend" {
   instance = aws_instance.vm1.id
   vpc      = true
