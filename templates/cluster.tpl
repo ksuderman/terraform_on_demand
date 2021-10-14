@@ -1,3 +1,5 @@
-Your instance will be available shortly at: ${ip}
-Use the SSH key ${key} that was provided to you, or ask ksuderman for the key.
+Your instance will be available shortly.
 
+IP     : ${ip}
+AWS IID: ${id}
+SSH Key: ${key}.pem
