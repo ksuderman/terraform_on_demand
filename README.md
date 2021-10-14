@@ -1,7 +1,9 @@
-# Infrastructure On Demand
-This is a simple proof of concept ChatOps Bot that can create/destroy infrastructure based on the Terraform plans in the `testing` branch of this repository.  In the future the branch to use will be specified as a parameter to the chat command or as a label, and each branch will contain a separate Terraform plan for the infrastructure to manage
+# Infrastructure On Demand - AWS
+This is a simple proof of concept ChatOps Bot that can create/destroy infrastructure based on the Terraform plans in the various branches of the repository.  To manage the AWS infrastructure defined in this branch add a comment to the issue with the label **branch/aws-test**.
 
-Add a comment to issue #2 with one of the recognized commands on the first line.  Subsequent lines are ignored and can be used for documentation.
+## The Plan
+
+The Terraform plan in this branch is intended to launch EC2 instances with the proper policies in place so Cloudman can manage an AWS cluster.
 
 ### Commands
 
@@ -18,12 +20,6 @@ All of the commands, except the /`test` command, run the equivalent terraform co
 ## Terraform State
 
 Terraform stores state information about the infrastructure is is managing on the local filesystem.  This is fine for local development, but in a CI system these files need to be stored somewhere persistent.  In this case we configure a S3 *backend* to store files in a S3 bucket and lock files in a DynamoDB.
-
-## Future Work
-
-1. **Terraform State**: Since the terraform state is stored in a single S3 bucket only a single cluster can be managed.  Use something [like this](https://github.com/KyMidd/Terraform_CI-CD_Bootstrap) to bootstrap the creation of the the DynamoDB table so the state from multiple clusters can be stored without stomping all over each another.
-2. **Parameterize branch**: The branch to checkout should be specified as a parameter to the chat command or as an issue label.  Prefer the label to avoid dealing with typos and unwanted behavior relying on the user to specify a valid branch
-3. **Pass variables** from the chat command to the Terraform plan.
 
 
 
