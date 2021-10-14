@@ -13,10 +13,10 @@ terraform {
 
   # Uncomment this after the S3 bucket has been bootstrapped.
   backend "s3" {
-    bucket         = "ks-github-tf-aws"
+    bucket         = "ks-gh-aws-test-tfstate"
     key            = "terraform.tfstate"
     region         = "us-east-1"
-    dynamodb_table = "ks-github-tf-aws"
+    dynamodb_table = "ks-gh-aws-test-locks"
     encrypt        = true
   }
 
