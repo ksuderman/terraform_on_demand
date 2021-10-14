@@ -30,4 +30,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
           issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
-          body: "This plan appears to be valid."
+          body: "The plan for the ${{ steps.branch.outputs.label}} branch appears to be valid."
