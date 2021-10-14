@@ -31,7 +31,7 @@ resource "aws_instance" "vm1" {
   ami           = "ami-09e67e426f25ce0d7"
   instance_type = var.instance_type
   key_name      = var.key_name
-
+  iam_instance_profile = aws_iam_instance_profile.profile.name
   root_block_device {
     volume_size = 250
   }
