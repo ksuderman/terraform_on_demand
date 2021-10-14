@@ -1,48 +1,52 @@
-resource "aws_s3_bucket" "state_bucket" {
-  bucket = var.name_of_s3_bucket
+# resource "aws_s3_bucket" "state_bucket" {
+#   bucket = var.name_of_s3_bucket
 
-  # Tells AWS to encrypt the S3 bucket at rest by default
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
+#   # Tells AWS to encrypt the S3 bucket at rest by default
+#   server_side_encryption_configuration {
+#     rule {
+#       apply_server_side_encryption_by_default {
+#         sse_algorithm = "AES256"
+#       }
+#     }
+#   }
 
-  # Prevents Terraform from destroying or replacing this object - a great safety mechanism
-  lifecycle {
-    prevent_destroy = true
-  }
+#   # Prevents Terraform from destroying or replacing this object - a great safety mechanism
+#   lifecycle {
+#     prevent_destroy = true
+#   }
 
-  # Tells AWS to keep a version history of the state file
-  versioning {
-    enabled = true
-  }
+#   # Tells AWS to keep a version history of the state file
+#   versioning {
+#     enabled = true
+#   }
 
-  tags = {
-    Terraform = "true"
-  }
-}
+#   tags = {
+#     Terraform = "true"
+#   }
+# }
 
 
-resource "aws_dynamodb_table" "tf_lock_state" {
-  name = var.dynamo_db_table_name
+# resource "aws_dynamodb_table" "tf_lock_state" {
+#   name = var.dynamo_db_table_name
 
-  # Pay per request is cheaper for low-i/o applications, like our TF lock state
-  billing_mode = "PAY_PER_REQUEST"
+#   lifecycle {
+#     prevent_destroy = true
+#   }
 
-  # Hash key is required, and must be an attribute
-  hash_key = "LockID"
+#   # Pay per request is cheaper for low-i/o applications, like our TF lock state
+#   billing_mode = "PAY_PER_REQUEST"
 
-  # Attribute LockID is required for TF to use this table for lock state
-  attribute {
-    name = "LockID"
-    type = "S"
-  }
+#   # Hash key is required, and must be an attribute
+#   hash_key = "LockID"
 
-  tags = {
-    Name    = var.dynamo_db_table_name
-    BuiltBy = "Terraform"
-  }
-}
+#   # Attribute LockID is required for TF to use this table for lock state
+#   attribute {
+#     name = "LockID"
+#     type = "S"
+#   }
+
+#   tags = {
+#     Name    = var.dynamo_db_table_name
+#     BuiltBy = "Terraform"
+#   }
+# }
