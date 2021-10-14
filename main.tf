@@ -18,25 +18,9 @@ resource "aws_route53_record" "bench3" {
   records = [aws_eip.frontend.public_ip]
 }
 
-resource "aws_route53_record" "auth" {
+resource "aws_route53_record" "wildcard" {
   zone_id = var.dns_zone
-  name    = "auth.${ var.fqdn }"
-  type    = "A"
-  ttl     = "3600"
-  records = [aws_eip.frontend.public_ip]
-}
-
-resource "aws_route53_record" "rancher" {
-  zone_id = var.dns_zone
-  name    = "rancher.${ var.fqdn }"
-  type    = "A"
-  ttl     = "3600"
-  records = [aws_eip.frontend.public_ip]
-}
-
-resource "aws_route53_record" "bench3" {
-  zone_id = var.dns_zone
-  name    = var.fqdn
+  name    = "*.${ var.fqdn }"
   type    = "A"
   ttl     = "3600"
   records = [aws_eip.frontend.public_ip]
