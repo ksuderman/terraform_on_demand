@@ -1,31 +1,49 @@
-variable "image" { default = "JS-API-Featured-Ubuntu20-Latest" }
-variable "flavor" { default = "m1.xlarge" }
-variable "key_pair" { default = "ks-cluster" }
-variable "network" { default = "ks-network" }
-
 variable "name" { default = "ks-github-terraform-bot"}
 
-variable "s3_bucket" { }
-variable "lock_table" {}
+variable "s3_bucket" { default = "ks-github-tf-aws"}
+variable "lock_table" { default = "ks-github-tf-aws" }
 
-resource "openstack_compute_instance_v2" "node" {
-  name            = var.name
-  image_name      = var.image
-  flavor_name     = var.flavor
-  key_pair        = var.key_pair
-  security_groups = [openstack_networking_secgroup_v2.fw.id, "default"]
+variable "fqdn" { default = "bench3.usegvl.org" }
+resource "aws_eip" "frontend" {
+  instance = aws_instance.vm1.id
+  vpc      = true
+}
 
-  network {
-    name = var.network
+resource "aws_route53_record" "bench3" {
+  zone_id = var.dns_zone
+  name    = var.fqdn
+  type    = "A"
+  ttl     = "3600"
+  records = [aws_eip.frontend.public_ip]
+}
+
+resource "aws_network_interface" "gateway" {
+  subnet_id       = var.subnet
+  security_groups = ["sg-01d3bb3198fb64c62"]
+
+  tags = {
+    Name = "primary_network_interface"
   }
 }
 
-resource "openstack_compute_floatingip_v2" "ip" {
-  pool  = "public"
+resource "aws_instance" "vm1" {
+  ami           = "ami-09e67e426f25ce0d7"
+  instance_type = var.instance_type
+  key_name      = var.key_name
+
+  root_block_device {
+    volume_size = 250
+  }
+
+  network_interface {
+    network_interface_id = aws_network_interface.gateway.id
+    device_index         = 0
+  }
+
+  tags = {
+    Name  = "BenchmarkDev"
+    Owner = "ks"
+  }
 }
 
-resource "openstack_compute_floatingip_associate_v2" "node_ips" {
-  floating_ip = openstack_compute_floatingip_v2.ip.address
-  instance_id = openstack_compute_instance_v2.node.id
-}
 

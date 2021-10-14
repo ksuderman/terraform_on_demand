@@ -6,7 +6,8 @@ terraform {
       version = "~> 1.35.0"
     }
     aws = {
-      version = "~> 2.36.0"
+      source  = "hashicorp/aws"
+      version = "~> 3.27"
     }
   }
 
@@ -21,11 +22,13 @@ terraform {
 
 }
 
-provider "openstack" {}
-
 provider "aws" {
+  profile = "default"
   region  = "us-east-1"
 }
+
+
+provider "openstack" {}
 
 module "bootstrap" {
   source                      = "./modules/bootstrap"
