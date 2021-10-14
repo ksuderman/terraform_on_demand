@@ -1,5 +1,5 @@
 locals {
-    key = var.key_pair
+    key = var.key_name
     ip = aws_eip.frontend.public_ip
 }
 
