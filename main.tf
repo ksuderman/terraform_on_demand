@@ -18,6 +18,30 @@ resource "aws_route53_record" "bench3" {
   records = [aws_eip.frontend.public_ip]
 }
 
+resource "aws_route53_record" "auth" {
+  zone_id = var.dns_zone
+  name    = "auth.${ var.fqdn }"
+  type    = "A"
+  ttl     = "3600"
+  records = [aws_eip.frontend.public_ip]
+}
+
+resource "aws_route53_record" "rancher" {
+  zone_id = var.dns_zone
+  name    = "rancher.${ var.fqdn }"
+  type    = "A"
+  ttl     = "3600"
+  records = [aws_eip.frontend.public_ip]
+}
+
+resource "aws_route53_record" "bench3" {
+  zone_id = var.dns_zone
+  name    = var.fqdn
+  type    = "A"
+  ttl     = "3600"
+  records = [aws_eip.frontend.public_ip]
+}
+
 resource "aws_network_interface" "gateway" {
   subnet_id       = var.subnet
   security_groups = ["sg-01d3bb3198fb64c62"]
