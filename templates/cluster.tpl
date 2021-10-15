@@ -1,5 +1,6 @@
 Your instance will be available shortly.
 
-IP     : ${ip}
-AWS IID: ${id}
+    public_ip: ${ip}
+    instance_id: ${id}
+    
 SSH Key: ${key}.pem
