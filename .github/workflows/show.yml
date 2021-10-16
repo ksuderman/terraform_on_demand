@@ -36,7 +36,7 @@ jobs:
       - name: Terraform Show
         id: show
         run: |
-          body=$(tf show -json | jq '.values.root_module.resources[] | "\(.type): \(.name)"')
+          body=$(terraform show -json | jq '.values.root_module.resources[] | "\(.type): \(.name)"')
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
