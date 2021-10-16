@@ -16,4 +16,5 @@ jobs:
             plan
             apply
             destroy
+            show
             test

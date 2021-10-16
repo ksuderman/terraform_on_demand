@@ -1,0 +1,51 @@
+name: ChatOps Bot - Terraform Show
+on:
+  repository_dispatch:
+    types: [ show-command ]
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  OS_AUTH_URL: ${{ secrets.OS_AUTH_URL }}
+  OS_USERNAME: ${{ secrets.OS_USERNAME }}
+  OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
+  OS_PROJECT_ID: ${{ secrets.OS_PROJECT_ID }}
+  OS_PROJECT_DOMAIN_ID: ${{ secrets.OS_PROJECT_DOMAIN_ID }}
+  OS_REGION_NAME: ${{ secrets.OS_REGION_NAME }}
+#  OS_PROJECT_NAME: ${{ secrets.OS_PROJECT_NAME }}          
+  OS_USER_DOMAIN_NAME: tacc
+  OS_INTERFACE: public
+  OS_IDENTITY_API_VERSION: 3
+
+jobs:
+  show:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get branch name from label
+        id: branch
+        run: |
+          label=${{ github.event.client_payload.github.payload.issue.labels[0].name }}
+          label=$(sed 's|branch/||' <<< $label)
+          echo ::set-output name=label::$label
+      - uses: actions/checkout@v1
+        with:
+          ref: ${{ steps.branch.outputs.label }}
+      - name: Terraform init
+        run: terraform init -input=false        
+      - name: Terraform version
+        run: terraform --version
+      - name: Terraform Show
+        id: show
+        run: |
+          body=$(tf show -json | jq '.values.root_module.resources[] | "\(.type): \(.name)"')
+          body="The following resources have been provisioned:\n\n$body"
+          body="${body//'%'/'%25'}"
+          body="${body//$'\n'/'%0A'}"
+          body="${body//$'\r'/'%0D'}" 
+          echo "::set-output name=body::$body"
+      - name: Create comment
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
+          issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
+          body: ${{ steps.show.outputs.body }}      
