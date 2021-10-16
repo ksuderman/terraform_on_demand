@@ -37,7 +37,6 @@ jobs:
         id: show
         run: |
           body=$(tf show -json | jq '.values.root_module.resources[] | "\(.type): \(.name)"')
-          body="The following resources have been provisioned:\n\n$body"
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
